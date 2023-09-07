@@ -1,6 +1,3 @@
-## Inception Devops Project
-
-```
 .
 ├── Makefile
 ├── README.md
@@ -13,6 +10,7 @@
         │   └── tools
         ├── nginx
         │   ├── conf
+        │   │   └── nginx.conf
         │   ├── Dockerfile
         │   └── tools
         ├── tools
@@ -21,5 +19,4 @@
             ├── Dockerfile
             └── tools
 
-13 directories, 6 files
-```
+13 directories, 7 files
