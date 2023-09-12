@@ -19,4 +19,6 @@ fclean:
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
+show:
+	@docker-compose -f ./srcs/docker-compose.yml config
 .PHONNY: all fclean clean down build
