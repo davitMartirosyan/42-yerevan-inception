@@ -1,25 +1,14 @@
-
-```
 .
-├── Makefile
-├── README.md
-└── srcs
-    ├── docker-compose.yml
-    └── requirements
-        ├── mariadb
-        │   ├── conf
-        │   ├── Dockerfile
-        │   └── tools
-        ├── nginx
-        │   ├── conf
-        │   │   └── nginx.conf
-        │   ├── Dockerfile
-        │   └── tools
-        ├── tools
-        └── wordpress
-            ├── conf
-            ├── Dockerfile
-            └── tools
+|-- Makefile
+|-- README.md
+`-- srcs
+    |-- docker-compose.yml
+    `-- requirements
+        `-- nginx
+            |-- conf
+            |   `-- nginx.conf
+            |-- Dockerfile
+            `-- tools
+                `-- nginx.conf
 
-13 directories, 7 files
-```
+6 directories, 6 files
