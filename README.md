@@ -7,10 +7,10 @@
     ├── docker-compose.yml
     └── requirements
         ├── mariadb
-        │   ├── aber
         │   ├── conf
         │   ├── Dockerfile
         │   └── tools
+        │       └── mariadb.sh
         └── nginx
             ├── conf
             │   └── nginx.conf

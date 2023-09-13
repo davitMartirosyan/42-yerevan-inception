@@ -1,6 +1,5 @@
 FROM alpine:3.18
 
-RUN apk update && apk upgrade && apk install --no-cache mariadb mariadb-clinet
+RUN apk update && apk upgrade && apk add --no-cache mariadb mariadb-client
 
-EXPOSE 3306
-CMD ["usr/bin/mysqld", "--skip-log-error"]
+CMD ["mysqld", "--bind-address=0.0.0.0"]
