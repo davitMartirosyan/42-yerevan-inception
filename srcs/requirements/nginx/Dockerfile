@@ -1,11 +1,31 @@
-FROM alpine:3.18
+FROM        debian:buster
 
-RUN rm -rf /etc/nginx/http.d/default.conf
-COPY tools/nginx.conf /etc/nginx/http.d/default.conf
-RUN apk update && apk upgrade && apk add --no-cache nginx openssl
-RUN mkdir /etc/nginx/ssl
-RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -keyout /etc/nginx/ssl/dmartiro.42.fr.key -out /etc/nginx/ssl/dmartiro.42.fr.crt -subj "/C=AM/ST=Yerevan/L=Armenia/O=42 School/OU=dmartiro/CN=dmartiro/"
+LABEL       "author"="dmartiro"
 
-RUN mkdir -p /run/nginx
+RUN         apt update &&\
+            apt upgrade -y &&\
+            apt install -y nginx openssl
 
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR	    /etc/nginx
+
+RUN         mkdir -p /etc/nginx/ssl
+
+RUN         openssl req -newkey rsa:4096 -x509 -sha256 \
+            -days 365 -nodes \
+            -out /etc/nginx/ssl/dmartiro.pem \
+            -keyout /etc/nginx/ssl/dmartiro.key \
+            -subj "/C=AM/ST=Yerevan/L=Yerevan/O=42Yerevan/OU=IT/CN=localhost"
+
+RUN         mkdir -p /run/nginx
+
+COPY        ./conf/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY	    ./tools/configure.sh ./
+
+
+RUN	    chmod 766 ./configure.sh
+
+ENTRYPOINT  ["/etc/nginx/configure.sh"]
+
+CMD         ["nginx", "-g", "daemon off;"]
+

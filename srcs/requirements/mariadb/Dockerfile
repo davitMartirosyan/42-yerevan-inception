@@ -1,5 +1,20 @@
-FROM alpine:3.18
+FROM        debian:buster
 
-RUN apk update && apk upgrade && apk add --no-cache mariadb mariadb-client
+LABEL       "author"="dmartiro"
 
-CMD ["mysqld", "--bind-address=0.0.0.0"]
+RUN         apt update && \
+	    apt upgrade -y && \
+	    apt install -y mariadb-server mariadb-client
+
+COPY        ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+
+COPY        ./tools/configure.sh /tmp/
+
+RUN         chmod 766 /tmp/configure.sh; \
+            chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf
+
+EXPOSE      3306
+
+ENTRYPOINT  ["/tmp/configure.sh"]
+
+CMD         ["mysqld"]

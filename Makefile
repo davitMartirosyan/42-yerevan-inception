@@ -1,24 +1,35 @@
-name = 42-inception
+FILE			= -f ./srcs/docker-compose.yml
+MOUNT_DIR		= $(HOME)/data
 
-all:
-	@echo "Configuring..."
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
+all:			build up
 
 build:
-	@echo "Building..."
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+			docker-compose $(FILE) build
+
+up:
+			mkdir -p $(MOUNT_DIR)/mariadb
+			mkdir -p $(MOUNT_DIR)/wordpress
+			docker-compose $(FILE) up -d
+
 down:
-	@echo "Shutdown..."
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
+			docker-compose $(FILE) down
+
+start:
+			docker-compose $(FILE) start
+
+stop:
+			docker-compose $(FILE) stop
+
 clean: down
-	@echo "Deleting Images..."
-	@docker system prune -a
-fclean:
-	@echo "Stopping and Deleting..."
-	@docker stop $$(docker ps -qa)
-	@docker system prune --all --force --volumes
-	@docker network prune --force
-	@docker volume prune --force
-show:
-	@docker-compose -f ./srcs/docker-compose.yml config
-.PHONNY: all fclean clean down build
+			docker image prune
+			docker rmi mariadb wordpress nginx
+			docker volume rm srcs_mariadb_data srcs_wordpress_data
+
+fclean: clean
+			sudo rm -rf $(MOUNT_DIR)/mariadb
+			sudo rm -rf $(MOUNT_DIR)/wordpress
+
+re:			clean all
+
+.PHONY:			all clean fclean re build up down start stop
+
